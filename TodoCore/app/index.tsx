@@ -1,8 +1,7 @@
-import { Alert, Pressable, Text, TextInput, View, ViewBase } from "react-native";
+import { Alert, Pressable, Text, TextInput, View, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native";
-import { Button } from "react-native";
 export default function Index() {
   return (
     <SafeAreaView>
@@ -17,7 +16,7 @@ export default function Index() {
       </View>
       <FlatList
         data={DATA}
-        renderItem={({ item }) => <Item taskTitle={item.taskTitle} />}
+        renderItem={({ item,  }) => <Item taskTitle={item.taskTitle} completed={item.completed} id={item.id} />}
         keyExtractor={item => item.id}
         style={styles.taskList}
       />
@@ -34,21 +33,27 @@ const DATA = [
   {
     id: '2',
     taskTitle: 'Breakfast',
-    completed: false,
+    completed: true,
   },
   {   id: '3',
     taskTitle: 'Study',
-    completed: false,
+    completed: true,
   },
 ];
 
 type ItemProps = {
   taskTitle: string;
+  completed: boolean;
+  id: string;
 }
 
-const Item = ({ taskTitle }: ItemProps) => (
-  <View>
-    <Text style={styles.taskTitle}>{taskTitle}</Text>
+const Item = ({ taskTitle, completed, id }: ItemProps) => (
+  <View style={styles.taskBox}>
+        <Text style={styles.taskTitle}>{taskTitle}</Text>
+    <Pressable style={styles.checkbox} onPress={() => console.log(id)}>
+      <Text>{completed ? '✅' : '⬜️'}</Text>
+    </Pressable>
+  
   </View>
 );
 
@@ -93,19 +98,24 @@ const styles = StyleSheet.create({
     color: "white",
   },
   taskList: {
-    marginTop: 32,
     padding: 20, 
-    
     width: '90%',
     alignSelf: "center",
+    marginTop: 32,
   },
   taskTitle: {
     fontSize: 18,
     color: "#000000",
     paddingVertical: 25,
-    borderTopWidth: 1,
+  },
+  checkbox: {
+    marginLeft: 'auto',
+    padding: 10,
+  },
+  taskBox: {
+    borderTopWidth: 2,
     borderTopColor: "#DDD",
-    borderBottomWidth: 1,
-    borderBottomColor: "#DDD",
-  }
+    flexDirection: 'row', 
+    alignItems: 'center',
+  },
 });
